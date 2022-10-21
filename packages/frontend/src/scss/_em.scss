@@ -1,0 +1,14 @@
+@use "sass:math";
+
+$em-base: 16 !default;
+$em-base-px: #{$em-base}px;
+
+// Convert px to em units.
+@function em($pxval, $base: $em-base) {
+  @return math.div($pxval, $base) * 1em;
+}
+
+// Convert px to rem units.
+@function rem($pxval, $base: $em-base) {
+  @return math.div($pxval, $base) * 1rem;
+}

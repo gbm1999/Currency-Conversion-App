@@ -1,0 +1,36 @@
+{
+  "private": true,
+  "name": "@currency-conversion-app/backend",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "clean": "rimraf ./dist/",
+    "lint": "eslint --ext .js,.cjs ./",
+    "dev": "cross-env DEBUG=true nodemon -- ./src/server.js",
+    "build": "esbuild --bundle --minify --format=cjs --platform=node --target=node16 --outfile=./dist/server.cjs ./src/server.js",
+    "start": "node -- ./dist/server.cjs"
+  },
+  "dependencies": {
+    "@fastify/cors": "~8.1.0",
+    "@fastify/rate-limit": "~7.5.0",
+    "@fastify/sensible": "~5.1.1",
+    "@fastify/swagger": "~8.0.0",
+    "dotenv": "~16.0.3",
+    "fastify": "~4.9.2",
+    "fastify-plugin": "~4.3.0",
+    "pino-pretty": "~9.1.1",
+    "undici": "~5.11.0"
+  },
+  "devDependencies": {
+    "@babel/core": "~7.19.6",
+    "@babel/eslint-parser": "~7.19.1",
+    "@babel/eslint-plugin": "~7.19.1",
+    "@babel/preset-env": "~7.19.4",
+    "esbuild": "~0.15.12",
+    "eslint": "~8.25.0",
+    "eslint-config-prettier": "~8.5.0",
+    "eslint-plugin-prettier": "~4.2.1",
+    "nodemon": "~2.0.20",
+    "prettier": "~2.7.1"
+  }
+}
