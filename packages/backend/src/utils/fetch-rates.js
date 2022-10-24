@@ -8,30 +8,29 @@ const cacheTime = 3600;
 var cache = {};
 let cacheTimer = 0;
 
-export const fetchRates = async () => {
+export const fetchRates = 
+async () => {
   // Prevent cached response.
-  const data = fetchWithCache("cache", cacheTime);
-  console.log(data);
+  const data = await fetchWithCache("cache", cacheTime);
 
 
   return new Map([...Object.entries(data.rates)].sort());
-};
+}
 
-const getCacheTimer  = time => {
-  const now = new Date().getTime();
-  if(cacheTimer < now + time) {
-    cacheTimer = now + time;
-  }
-  return cacheTimer;
+const setCacheTimer  = time => {
+  const now = new Date().getTime()/1000;
+  cacheTimer = now + time;
 }
 
 const fetchWithCache = async (cacheName, time) => {
-  const now = new Date().getTime();
-  if(!cache[cacheName] || cache[cacheName].cacheTimer < now) {
-    cache[cacheName].data = await fetchURL();
-    cache[cacheName].cacheTimer = getCacheTimer(time);
+  const now = new Date().getTime()/1000;
+
+  if(!cache[cacheName] || cacheTimer < now) {
+    cache[cacheName] = await fetchURL();
+    setCacheTimer(time);
   }
-  return cache[cacheName].data;
+
+  return cache[cacheName];
 }
 
 const fetchURL = async () => {
