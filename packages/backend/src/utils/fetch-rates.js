@@ -7,14 +7,15 @@ endpoint.searchParams.set("_", Date.now());
 const cacheTime = 3600;
 var cache = {};
 let cacheTimer = 0;
+let mutex = Promise.resolve() // global mutex instance
 
-export const fetchRates = 
-async () => {
+export const fetchRates = async () => {
   // Prevent cached response.
-  const data = await fetchWithCache("cache", cacheTime);
-
-
-  return new Map([...Object.entries(data.rates)].sort());
+  mutex = mutex.then(async () => {
+    const data = await fetchWithCache("cache", cacheTime);
+    return new Map([...Object.entries(data.rates)].sort());
+  }).catch(() => {})
+  return mutex;
 }
 
 const setCacheTimer  = time => {
