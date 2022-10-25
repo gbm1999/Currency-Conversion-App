@@ -8,14 +8,11 @@ export class CurrenciesService {
   async get({ reply }) {
     try {
       const currenciesRetrieved = currencySymbols;
-
       let currencies = {};
       const code ={};
-      const code2 = {code:"", symbol:""};
-      for (const key in currenciesRetrieved) {
-        code2.code = key;
-        code2.symbol = currenciesRetrieved[key];
-        code[key] = code2;
+
+      for (let key in currenciesRetrieved) {
+        code[key] = {code:key, symbol:currenciesRetrieved[key]};
       }
       currencies = code;
       reply.send({ currencies  });
