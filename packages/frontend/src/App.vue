@@ -18,7 +18,7 @@ const toCurrency = ref("USD");
 const toValue = ref(null);
 
 // Supported currencies.
-const currencies = ref({
+let currencies = ref({
   EUR: { code: "EUR", symbol: "€" },
   USD: { code: "USD", symbol: "$" },
 });
@@ -40,6 +40,32 @@ const swap = () => {
   tmp = fromValue.value;
   fromValue.value = toValue.value;
   toValue.value = tmp;
+};
+
+// Display currencies
+const show = async () => {
+  //toValue.value = null;
+  //fromCurrency.value = null; 
+  //toCurrency.value = null;
+  currencies.value = null;
+
+
+  try {
+    const response = await fetch(
+      `${apiEndpoint}/currencies`,
+      {
+        method: "GET",
+      }
+    );
+    if (!response.ok) {
+      throw new Error(`Unexpected API response code: ${response.status}`);
+    }
+    const responseData = await response.json();
+    currencies.value = responseData.currencies;
+    errorMessage.value = "";
+  } catch (error) {
+    errorMessage.value = error.message;
+  }
 };
 
 // Converts selected currencies.
@@ -68,6 +94,7 @@ const convert = async () => {
 
 // On mount, convert default currencies.
 onMounted(convert);
+onMounted(show);
 </script>
 
 <template>
