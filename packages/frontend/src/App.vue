@@ -25,6 +25,7 @@ let currencies = ref({
 
 // Error message to show.
 const errorMessage = ref("");
+var errorStatus = ref("");
 
 // Clears the converted value.
 const clear = () => {
@@ -79,10 +80,20 @@ const convert = async () => {
         method: "GET",
       }
     );
-    if (!response.ok) {
+    if (response.status == 403){
+      errorStatus.value = "403";
+      var timeOut = response.headers.get('x-ratelimit-reset');
+      timeOut *= 1000;
+
+      setTimeout(() => errorStatus.value = "", timeOut);
       throw new Error(`Unexpected API response code: ${response.status}`);
     }
+    else if (!response.ok) {
+      throw new Error(`Unexpected API response code: ${response.status}`);
+    }
+    else{
 
+    }
     const responseData = await response.json();
     toValue.value = round(fromValue.value * responseData.rate, 4);
 
@@ -107,6 +118,7 @@ onMounted(show);
         </option>
       </select>
       <input
+      :disabled="errorStatus.length > 0"
         v-model.number="fromValue"
         type="number"
         step="0.0001"
@@ -127,7 +139,7 @@ onMounted(show);
       <button type="button" @click="swap">
         <fa :icon="faRetweet" fw />&nbsp;Swap
       </button>
-      <button type="submit">
+      <button  :disabled="errorStatus.length > 0" type="submit">
         <fa :icon="faArrowsRotate" fw />&nbsp;Convert
       </button>
     </fieldset>
