@@ -144,9 +144,9 @@ onMounted(show);
         <fa :icon="faArrowsRotate" fw />&nbsp;Convert
       </button>
     </fieldset>
-    <fieldset>
+    <div>
       <span v-if="errorMessage.length > 0">{{ errorMessage }}</span>
-    </fieldset>
+    </div>
   </form>
 </template>
 
