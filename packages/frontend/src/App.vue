@@ -249,6 +249,8 @@ body {
     padding: 0;
     width: 100%;
     border: 0;
+    border-radius: rem(3);
+    background-color: map-get($theme-colors, "light");
 
     > * {
       flex: 1 1 auto;
