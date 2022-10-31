@@ -124,7 +124,7 @@ onMounted(show);
         step="0.0001"
         min="0.0001"
         required
-        autofocus
+        onclick="this.focus();this.select()"
         @input="clear"
       />
     </fieldset>
@@ -134,7 +134,7 @@ onMounted(show);
           {{ k }}&nbsp;{{ v.symbol ?? "" }}
         </option>
       </select>
-      <input v-model.number="toValue" type="number" readonly autofocus/>
+      <input v-model.number="toValue" type="number" readonly onclick="this.focus();this.select()"/>
     </fieldset>
     <fieldset>
       <button type="button" @click="swap">
